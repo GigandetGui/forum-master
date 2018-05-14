@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Créer un article</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <!-- Menu -->
+            <h:link value="Accueil" outcome="toIndex"/>
+            <h:link value="Nouveau Article" outcome="toCreateArticle"/>
+            <h:link value="Nouveau Commentaire" outcome="toCreateCommentaire"/>
+
+            <!-- Formulaire de création d'article -->
+            <h:form>
+                <h:outputLabel value="Libellé : "/>
+                <h:inputText value="#{articleManager.article.libelle}"/>
+                <h:outputLabel value="Date de l'article : "/>
+                <h:inputText value="#{articleManager.article.dte}"/>
+                <h:message for="ajoutArticle" showSummary="true" />
+                <h:commandButton value="Créer" action="#{articleManager.createArticle()}"/>
+            </h:form>
+        </f:view>
+    </h:body>
+</html>

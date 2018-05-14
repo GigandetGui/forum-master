@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Accueil</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h:form>
+            <!-- Menu -->
+            <h:link value="Accueil" outcome="toIndex"/>
+                <h:panelGrid id="commentaireGrid" columns="2" cellpadding="5">
+                    <h:outputLabel value="Titre : "/>
+                    <p:inputText id="commentaireTitre" value="#{entityManager.commentaire.getTitre()}" required="true"/>
+                    <h:outputLabel value="Contenu : "/>
+                    <p:inputText id="commentaireContenu" value="#{entityManager.commentaire.getContenu()}" required="true"/>
+                    <p:outputLabel value="Article : "/>
+                    <p:selectOneMenu  value="#{entityManager.article}" converter="entityConverter">
+                        <f:selectItems value="#{entityManager.articles}" var="article" itemLabel="#{article.titre}"/>
+                    </p:selectOneMenu>
+                    <p:growl id="commentaireGrowl" life="2000" />
+                    <p:commandButton value="Modifier le commentaire" action="#{entityManager.updateCommentaire}" styleClass="ui-priority-primary" />
+                </h:panelGrid>
+            </h:form>
+        </f:view>
+    </h:body>
+</html>

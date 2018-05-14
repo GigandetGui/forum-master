@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head></h:head>
+    <h:body>
+        <h:form>   
+            <!--bouton dynamique création d'un article -->
+            <p:commandButton id="articleBtn" value="Poster mon article" type="button"/>
+            <p:overlayPanel id="articlePanel" for="articleBtn" hideEffect="fade" dynamic="true">
+                <h:panelGrid id="articleGrid" columns="3" cellpadding="5">
+                    <h:outputLabel value="Titre : "/>
+                    <p:inputText id="articleTitre" value="#{entityManager.articleToAdd.titre}" required="true"/>
+                    <p:growl id="articleGrowl" life="2000" />
+                    <p:commandButton value="Ajouter l'article ?" ajax="true" update="articleGrowl,updateMe" actionListener="#{entityManager.createArticle}" styleClass="ui-priority-primary" />
+                </h:panelGrid>
+            </p:overlayPanel>
+            <!--bouton dynamique création d'un commentaire -->
+            <p:commandButton id="commentaireBtn" value="Poster mon commentaire" type="button"/>
+            <p:overlayPanel id="commentairePanel" for="commentaireBtn" hideEffect="fade" dynamic="true">
+                <h:panelGrid id="commentaireGrid" columns="2" cellpadding="5">
+                    <h:outputLabel value="Titre : "/>
+                    <p:inputText id="commentaireTitre" value="#{entityManager.commentaireToAdd.titre}" required="true"/>
+                    <h:outputLabel value="Contenu : "/>
+                    <p:inputText id="commentaireContenu" value="#{entityManager.commentaireToAdd.contenu}" required="true"/>
+                    <p:outputLabel value="Article : "/>
+                    <p:selectOneMenu  value="#{entityManager.article}" converter="entityConverter">
+                        <f:selectItems value="#{entityManager.articles}" var="article" itemLabel="#{article.titre}"/>
+                    </p:selectOneMenu>
+                    <p:growl id="commentaireGrowl" life="2000" />
+                    <p:commandButton value="Ajouter le commentaire ?" ajax="true" update="commentaireGrowl,updateMe" actionListener="#{entityManager.createCommentaire}" styleClass="ui-priority-primary" />
+                </h:panelGrid>
+            </p:overlayPanel>
+      
+        <p:accordionPanel id="updateMe">
+            <c:forEach  items="#{entityManager.articles}" var="art">
+                <p:tab title="#{art.titre}">           
+                        <p:commandButton value="Modifier" action="#{entityManager.editArticle}" styleClass="ui-priority-primary" />
+                        <p:commandButton value="Supprimer" ajax="true" update="updateMe" action="#{entityManager.deleteArticle(art)}" styleClass="ui-priority-primary" />
+                        <br></br>
+                        <br></br>
+                    <c:forEach  items="#{art.commentaires}" var="comm">
+                        <h:outputText value="#{comm.titre}"/>
+                        <h:outputText value=" - "/>
+                        <h:outputText value="#{comm.contenu}"/>
+                         <p:commandButton value="Modifier" action="#{entityManager.editCommentaire(comm)}" styleClass="ui-priority-primary" />
+                         <p:commandButton value="Supprimer" ajax="true" update="updateMe" action="#{entityManager.deleteCommentaire(comm)}" styleClass="ui-priority-primary" />
+                        <br></br>
+                    </c:forEach>
+                </p:tab>
+            </c:forEach>
+        </p:accordionPanel>
+              </h:form>
+    </h:body>
+</html>
